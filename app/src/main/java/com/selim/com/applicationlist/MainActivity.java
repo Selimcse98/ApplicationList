@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,19 +15,33 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList <AppData> arrayList;
-
+    private String resultStr="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView textView = (TextView) findViewById(R.id.resultText);
 
         arrayList = getInstalledApps();
-
-        Iterator <AppData>i = arrayList.iterator();
+        AppData appData;
+        Iterator <AppData> i = arrayList.iterator();
         while ((i.hasNext())){
-            System.out.println("Application Name: "+i.next().appName);
+            appData = i.next();
+            resultStr+=appData.appName;
+            resultStr+="  "+appData.packageName+"\n";
+            System.out.println("Application Name: "+(appData.appName));
+            System.out.println("Application Package: "+(appData.packageName));
+
         }
+
+        textView.setMovementMethod(ScrollingMovementMethod.getInstance());
+        textView.setText(resultStr);
     }
+
+    public String getResultStr(){
+        return "";
+    }
+
     public ArrayList<AppData> getInstalledApps(){
         ArrayList<AppData> appsList = new ArrayList<>();
         PackageManager pm = getPackageManager();
